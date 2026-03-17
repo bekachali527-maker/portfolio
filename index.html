@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Beka Chali | Architect & Designer</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root { 
+            --bg: #ffffff; 
+            --text: #000000; 
+            --muted: #666666; 
+            --border: #eeeeee; 
+        }
+        
+        body, html { 
+            margin: 0; 
+            font-family: 'Inter', sans-serif; 
+            scroll-behavior: smooth; 
+            background: var(--bg);
+            color: var(--text);
+            overflow-x: hidden;
+            /* Security: Prevents users from highlighting content */
+            user-select: none;
+            -webkit-user-select: none;
+        }
+
+        /* Image Security: Prevents dragging images */
+        img {
+            pointer-events: none;
+            -webkit-user-drag: none;
+        }
+
+        /* Fixed Navigation */
+        nav { 
+            display: flex; 
+            justify-content: space-between; 
+            padding: 30px 60px; 
+            position: fixed; 
+            top: 0; 
+            width: calc(100% - 120px); 
+            z-index: 1000; 
+            text-transform: uppercase; 
+            font-size: 11px; 
+            letter-spacing: 2px; 
+            background: rgba(255,255,255,0.01);
+        }
+        nav a { text-decoration: none; color: white; margin-left: 30px; font-weight: 600; transition: 0.3s; }
+        nav a:hover { opacity: 0.7; }
+
+        /* Floating Scroll to Top */
+        #scrollTopBtn {
+            display: none; 
+            position: fixed;
+            bottom: 40px;
+            right: 40px;
+            z-index: 2000;
+            border: 1px solid var(--text);
+            background-color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: 0.3s;
+            align-items: center;
+            justify-content: center;
+        }
+        #scrollTopBtn:hover { background: black; color: white; transform: translateY(-5px); }
+
+        .p-wrapper { position: relative; z-index: 1; }
+
+        /* 1. Primary Hero Section */
+        .parallax-hero {
+            background-image: url("./hero-main.jpg");
+            height: 95vh;
+            background-attachment: fixed;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            position: relative;
+        }
+        .parallax-overlay { 
+            background: rgba(0,0,0,0.5); 
+            width: 100%; height: 100%; 
+            display: flex; flex-direction: column; align-items: center; justify-content: center; 
+            color: white; text-align: center; padding: 0 20px;
+        }
+        .parallax-hero h1 { font-size: 56px; font-weight: 300; max-width: 800px; margin: 0; line-height: 1.1; letter-spacing: -2px; }
+        .parallax-hero p { font-size: 14px; text-transform: uppercase; letter-spacing: 5px; margin-top: 30px; font-weight: 300; }
+
+        /* 2. Content Sections */
+        .container { 
+            max-width: 1400px; 
+            margin: 0 auto; 
+            padding: 100px 40px; 
+            background: white;
+            position: relative;
+            z-index: 2;
+        }
+
+        .philosophie-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            min-height: 80vh;
+            position: relative;
+            z-index: 1;
+        }
+        .philosophie-image-area {
+            background-image: url("philosophie-geometric.jpg");
+            background-attachment: fixed;
+            background-position: left center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            width: 100%; height: 100%;
+        }
+        .philosophie-text-area {
+            background: white;
+            padding: 100px 80px;
+            display: flex; flex-direction: column; justify-content: center;
+        }
+        .philosophie-text-area h2 { font-size: 12px; text-transform: uppercase; letter-spacing: 3px; color: var(--muted); margin-bottom: 30px; }
+        .philosophie-text-area p { font-size: 24px; font-weight: 300; line-height: 1.6; margin: 0; }
+
+        /* Portfolio Grid */
+        .highlight-container { padding-top: 150px; }
+        .section-header {
+            display: flex; justify-content: space-between; align-items: baseline;
+            border-bottom: 1px solid var(--text); padding-bottom: 15px; margin-bottom: 70px;
+        }
+        .section-header h2 { font-size: 14px; text-transform: uppercase; letter-spacing: 2px; margin: 0; }
+
+        .highlight-grid { 
+            display: grid; 
+            grid-template-columns: repeat(2, 1fr); 
+            gap: 80px 40px; 
+        }
+
+        .highlight-item { text-decoration: none; color: inherit; display: block; overflow: hidden; }
+        .highlight-item.wide { grid-column: span 2; } 
+
+        .highlight-item .img-container { 
+            width: 100%; 
+            overflow: hidden; 
+            border: 1px solid var(--border); 
+            margin-bottom: 25px; 
+            background: #fcfcfc;
+        }
+        
+        .img-container.landscape { aspect-ratio: 16 / 9; }
+        .img-container.square { aspect-ratio: 1 / 1; }
+
+        .highlight-item img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.8s cubic-bezier(0.2, 1, 0.3, 1); }
+        .highlight-item:hover img { transform: scale(1.03); }
+        
+        .highlight-item h3 { font-size: 18px; font-weight: 600; text-transform: uppercase; margin: 0; letter-spacing: 1px; }
+        .highlight-item p { font-size: 13px; color: var(--muted); margin-top: 10px; }
+
+        footer { 
+            margin-top: 150px; padding: 50px 0; border-top: 1px solid var(--border); 
+            display: flex; justify-content: space-between; font-size: 11px; 
+            color: var(--muted); text-transform: uppercase; letter-spacing: 1px;
+        }
+
+        @media (max-width: 900px) {
+            .philosophie-section, .highlight-grid { grid-template-columns: 1fr; }
+            .highlight-item.wide { grid-column: span 1; }
+            nav { padding: 20px 30px; width: calc(100% - 60px); }
+            .parallax-hero h1 { font-size: 36px; }
+            .philosophie-text-area { padding: 60px 25px; }
+        }
+    </style>
+</head>
+<body oncontextmenu="return false;">
+
+    <button onclick="topFunction()" id="scrollTopBtn" title="Go to top">↑</button>
+
+    <nav>
+        <div style="letter-spacing: 3px; font-weight: 600;">Beka Chali</div>
+        <div>
+            <a href="index.html">Home</a>
+            <a href="work.html">Work</a>
+            <a href="contact.html">Contact</a>
+        </div>
+    </nav>
+
+    <div class="p-wrapper">
+        <section class="parallax-hero">
+            <div class="parallax-overlay">
+                <h1>Design with the End in Mind.</h1>
+                <p>Function. Aesthetics. Buildability.</p>
+            </div>
+        </section>
+
+        <section class="philosophie-section">
+            <div class="philosophie-image-area"></div>
+            <div class="philosophie-text-area">
+                <h2>Core Philosophy</h2>
+                <p>Aesthetics without buildability and simplification results in an incomplete vision. I transform client needs into emotional experiences, bringing precise value to the expectations you dreamt of.</p>
+            </div>
+        </section>
+
+        <div class="container highlight-container">
+            <div class="section-header">
+                <h2>Featured Portfolio</h2>
+            </div>
+
+            <div class="highlight-grid">
+                <a href="work.html" class="highlight-item wide">
+                    <div class="img-container landscape"><img src="h1.jpg" alt="Work"></div>
+                    <h3>Medical Library</h3>
+                    <p>Institutional Design • Salale University, Ethiopia</p>
+                </a>
+
+                <a href="work.html" class="highlight-item">
+                    <div class="img-container square"><img src="h2.jpg" alt="Work"></div>
+                    <h3>Bamboo House</h3>
+                    <p>IBCC Honorary Mention • China</p>
+                </a>
+
+                <a href="work.html" class="highlight-item">
+                    <div class="img-container square"><img src="h3.jpg" alt="Work"></div>
+                    <h3>Hotel Competition</h3>
+                    <p>Conceptual Form • Addis Ababa</p>
+                </a>
+
+                <a href="work.html" class="highlight-item wide">
+                    <div class="img-container landscape"><img src="h4.jpg" alt="Work"></div>
+                    <h3>3D Floor Plans</h3>
+                    <p>Residential Concept & Interior Visualization</p>
+                </a>
+
+                <a href="work.html" class="highlight-item">
+                    <div class="img-container square"><img src="h5.jpg" alt="Work"></div>
+                    <h3>Office Interior</h3>
+                    <p>Functional Workspace • Addis Ababa</p>
+                </a>
+
+                <a href="work.html" class="highlight-item">
+                    <div class="img-container square"><img src="h6.jpg" alt="Work"></div>
+                    <h3>Coffee Shop</h3>
+                    <p>Mood Board to Construction Delivery</p>
+                </a>
+
+                <a href="work.html" class="highlight-item">
+                    <div class="img-container square"><img src="h7.jpg" alt="Work"></div>
+                    <h3>Minimalist Suite</h3>
+                    <p>Interior Visualization & Aesthetic Refinement</p>
+                </a>
+
+                <a href="work.html" class="highlight-item">
+                    <div class="img-container square"><img src="h8.jpg" alt="Work"></div>
+                    <h3>Luxury Bathroom</h3>
+                    <p>Corona Rendering • High-End Finish Detail</p>
+                </a>
+            </div>
+
+            <footer>
+                <div>&copy; 2026 Beka Chali</div>
+                <div>Addis Ababa, Ethiopia</div>
+            </footer>
+        </div>
+    </div>
+
+    <script>
+        let mybutton = document.getElementById("scrollTopBtn");
+        window.onscroll = function() {
+            if (document.body.scrollTop > 500 || document.documentElement.scrollTop > 500) {
+                mybutton.style.display = "flex";
+            } else {
+                mybutton.style.display = "none";
+            }
+        };
+        function topFunction() {
+            window.scrollTo({top: 0, behavior: 'smooth'});
+        }
+
+        document.addEventListener('keydown', function(e) {
+            if (e.ctrlKey && (e.key === 's' || e.key === 'u' || e.key === 'i')) {
+                e.preventDefault();
+            }
+        });
+    </script>
+</body>
+</html>
