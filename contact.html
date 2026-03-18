@@ -6,35 +6,72 @@
     <title>Contact | Beka Chali</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
-        :root { --bg: #ffffff; --text: #000000; --muted: #666666; --border: #eeeeee; }
-        body { margin: 0; background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; }
+        :root { 
+            --bg: #ffffff; 
+            --text: #000000; 
+            --muted: #666666; 
+            --border: #eeeeee; 
+        }
         
+        body { 
+            margin: 0; 
+            background: var(--bg); 
+            color: var(--text); 
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+            /* Security: Disables selection */
+            user-select: none;
+            -webkit-user-select: none;
+        }
+
+        /* Image Security: Prevents dragging */
+        img {
+            pointer-events: none;
+            -webkit-user-drag: none;
+        }
+        
+        /* Responsive Nav */
         nav { 
             display: flex; 
             justify-content: space-between; 
-            padding: 30px 60px; 
+            align-items: center;
+            padding: 20px 60px; 
             position: fixed; 
             top: 0; 
-            width: calc(100% - 120px); 
+            width: 100%; 
+            box-sizing: border-box;
             z-index: 1000; 
             text-transform: uppercase; 
             font-size: 11px; 
             letter-spacing: 2px; 
-            background: white;
+            background: rgba(255, 255, 255, 0.95); 
+            backdrop-filter: blur(10px);
             border-bottom: 1px solid var(--border);
         }
-        nav a { text-decoration: none; color: var(--text); margin-left: 30px; font-weight: 600; }
+
+        .nav-links { display: flex; }
+        nav a { text-decoration: none; color: var(--text); margin-left: 30px; font-weight: 600; transition: 0.3s; }
         nav a.active { border-bottom: 2px solid #000; padding-bottom: 5px; }
+        
+        .menu-toggle { display: none; cursor: pointer; font-size: 14px; font-weight: 600; }
 
         .container { 
             max-width: 800px; 
             margin: 0 auto; 
             padding: 160px 40px 100px; 
             text-align: center;
+            box-sizing: border-box;
         }
 
-        .contact-content h1 { font-size: 42px; font-weight: 300; line-height: 1.2; margin-bottom: 20px; }
-        .contact-content p { color: var(--muted); font-size: 16px; margin-bottom: 50px; }
+        .contact-content h1 { 
+            font-size: clamp(24px, 5vw, 42px); 
+            font-weight: 300; 
+            line-height: 1.2; 
+            margin-bottom: 20px; 
+            letter-spacing: -1px;
+        }
+        
+        .contact-content p { color: var(--muted); font-size: 15px; margin-bottom: 50px; line-height: 1.6; }
 
         .links-area { margin-bottom: 60px; }
         .contact-link { 
@@ -54,23 +91,40 @@
             margin: 0 auto;
             filter: grayscale(1);
             border: 1px solid var(--border);
+            overflow: hidden;
         }
         .profile-photo-container img { width: 100%; display: block; }
 
         footer { margin-top: 80px; font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 2px; }
 
-        @media (max-width: 768px) {
-            nav { padding: 20px 30px; width: calc(100% - 60px); }
-            .contact-content h1 { font-size: 32px; }
-            .container { padding-top: 120px; }
+        /* MOBILE FIXES */
+        @media (max-width: 850px) {
+            nav { padding: 15px 25px; }
+            .menu-toggle { display: block; }
+            .nav-links { 
+                display: none; 
+                flex-direction: column; 
+                position: absolute; 
+                top: 55px; left: 0; width: 100%; 
+                background: white; 
+                padding: 20px 0;
+                border-bottom: 1px solid #eee;
+                text-align: center;
+            }
+            .nav-links.active { display: flex; }
+            nav a { margin: 15px 0; }
+            
+            .container { padding: 120px 25px 60px; }
+            .contact-content h1 { margin-bottom: 30px; }
         }
     </style>
 </head>
-<body>
+<body oncontextmenu="return false;">
 
     <nav>
         <div style="letter-spacing: 3px; font-weight: 600;">Beka Chali</div>
-        <div>
+        <div class="menu-toggle" onclick="toggleMenu()">MENU</div>
+        <div class="nav-links" id="navLinks">
             <a href="index.html">Home</a>
             <a href="work.html">Work</a>
             <a href="contact.html" class="active">Contact</a>
@@ -83,7 +137,7 @@
             <p>Based in Addis Ababa, Ethiopia. Specializing in Revit, Sketchup, and high-fidelity 3D visualization.</p>
             
             <div class="links-area">
-                <a href="mailto:hello@bekachali.com" class="contact-link">bekachali527@gmail.com</a>
+                <a href="mailto:bekachali527@gmail.com" class="contact-link">bekachali527@gmail.com</a>
                 <a href="https://linkedin.com/in/beka11" target="_blank" class="contact-link">LinkedIn Profile &rarr;</a>
             </div>
 
@@ -96,6 +150,19 @@
             Architect & Interior Designer &bull; 2026
         </footer>
     </div>
+
+    <script>
+        function toggleMenu() {
+            document.getElementById("navLinks").classList.toggle("active");
+        }
+
+        // Security: Block keyboard shortcuts
+        document.addEventListener('keydown', function(e) {
+            if (e.ctrlKey && (e.key === 's' || e.key === 'u' || e.key === 'i')) {
+                e.preventDefault();
+            }
+        });
+    </script>
 
 </body>
 </html>

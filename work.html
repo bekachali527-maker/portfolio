@@ -24,45 +24,51 @@
             color: var(--text); 
             font-family: 'Inter', sans-serif; 
             line-height: 1.5;
-            /* Prevents users from highlighting text/images */
             user-select: none;
             -webkit-user-select: none;
+            overflow-x: hidden;
         }
 
-        /* Image Security: Prevents dragging images to the desktop */
         img {
             pointer-events: none;
             -webkit-user-drag: none;
         }
         
+        /* Responsive Nav */
         nav { 
             display: flex; 
             justify-content: space-between; 
-            padding: 30px 60px; 
+            align-items: center;
+            padding: 20px 60px; 
             position: fixed; 
             top: 0; 
-            width: calc(100% - 120px); 
+            width: 100%; 
+            box-sizing: border-box;
             z-index: 1000; 
             text-transform: uppercase; 
             font-size: 11px; 
             letter-spacing: 2px; 
-            background: rgba(255, 255, 255, 0.9); 
+            background: rgba(255, 255, 255, 0.95); 
             backdrop-filter: blur(10px);
             border-bottom: 1px solid #eeeeee;
         }
-        nav a { text-decoration: none; color: var(--text); margin-left: 30px; font-weight: 600; }
+
+        .nav-links { display: flex; }
+        nav a { text-decoration: none; color: var(--text); margin-left: 30px; font-weight: 600; transition: 0.3s; }
         nav a.active { border-bottom: 2px solid #000; padding-bottom: 5px; }
+        
+        .menu-toggle { display: none; cursor: pointer; font-size: 14px; font-weight: 600; }
 
-        .container { max-width: 1400px; margin: 0 auto; padding: 160px 40px 100px; }
+        .container { max-width: 1400px; margin: 0 auto; padding: 140px 40px 100px; }
 
-        .work-header { margin-bottom: 80px; border-left: 4px solid #000; padding-left: 30px; }
-        .work-header h1 { font-size: 52px; font-weight: 300; margin: 0; letter-spacing: -2px; }
-        .work-header p { font-size: 14px; text-transform: uppercase; letter-spacing: 3px; color: var(--muted); margin-top: 10px; }
+        .work-header { margin-bottom: 60px; border-left: 4px solid #000; padding-left: 25px; }
+        .work-header h1 { font-size: clamp(32px, 6vw, 52px); font-weight: 300; margin: 0; letter-spacing: -1px; line-height: 1; }
+        .work-header p { font-size: 12px; text-transform: uppercase; letter-spacing: 3px; color: var(--muted); margin-top: 10px; }
 
         .work-grid { 
             display: grid; 
             grid-template-columns: repeat(2, 1fr); 
-            gap: 80px 40px; 
+            gap: 60px 40px; 
             grid-auto-flow: dense; 
         }
 
@@ -102,7 +108,7 @@
         .work-item:hover img { transform: scale(1.02); }
 
         .item-label { 
-            margin-top: 20px;
+            margin-top: 15px;
             display: flex;
             justify-content: space-between;
             align-items: flex-start;
@@ -110,20 +116,43 @@
             padding-top: 5px;
         }
         
-        .item-label h3 { font-size: 18px; font-weight: 600; text-transform: uppercase; margin: 0; letter-spacing: 1px; }
-        .item-label .category { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 2px; margin-top: 5px; }
-        .item-label .count { font-family: serif; font-style: italic; font-size: 18px; }
+        .item-label h3 { font-size: 15px; font-weight: 600; text-transform: uppercase; margin: 0; letter-spacing: 1px; }
+        .item-label .category { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; margin-top: 5px; }
+        .item-label .count { font-family: serif; font-style: italic; font-size: 16px; }
 
-        @media (max-width: 900px) {
-            .work-grid { grid-template-columns: 1fr; }
+        /* MOBILE FIXES */
+        @media (max-width: 850px) {
+            nav { padding: 15px 25px; }
+            .menu-toggle { display: block; }
+            .nav-links { 
+                display: none; 
+                flex-direction: column; 
+                position: absolute; 
+                top: 55px; left: 0; width: 100%; 
+                background: white; 
+                padding: 20px 0;
+                border-bottom: 1px solid #eee;
+                text-align: center;
+            }
+            .nav-links.active { display: flex; }
+            nav a { margin: 15px 0; }
+            
+            .container { padding: 120px 20px 60px; }
+            .work-grid { grid-template-columns: 1fr; gap: 50px; }
             .work-item.featured, .work-item.tall { grid-column: span 1; grid-row: span 1; }
-            nav { padding: 20px 30px; width: calc(100% - 60px); }
+            
+            /* Give images a fixed height on mobile so they don't disappear */
+            .media-wrapper { height: 350px; }
+            .work-item.featured .media-wrapper { height: auto; } /* Keep video aspect ratio */
         }
     </style>
 </head>
-<body oncontextmenu="return false;"> <nav>
+<body oncontextmenu="return false;"> 
+    
+    <nav>
         <div style="letter-spacing: 3px; font-weight: 600;">Beka Chali</div>
-        <div>
+        <div class="menu-toggle" onclick="toggleMenu()">MENU</div>
+        <div class="nav-links" id="navLinks">
             <a href="index.html">Home</a>
             <a href="work.html" class="active">Work</a>
             <a href="contact.html">Contact</a>
@@ -191,7 +220,10 @@
     </div>
 
     <script>
-        // Extra Security: Prevents common keyboard shortcuts for saving (Ctrl+S, Ctrl+U)
+        function toggleMenu() {
+            document.getElementById("navLinks").classList.toggle("active");
+        }
+
         document.addEventListener('keydown', function(e) {
             if (e.ctrlKey && (e.key === 's' || e.key === 'u' || e.key === 'i')) {
                 e.preventDefault();
