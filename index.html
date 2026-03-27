@@ -3,421 +3,328 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Beka Chali | Lead Video Editor & Content Creator</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <title>Beka Chali | Architect & Designer</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500;700&display=swap');
-        :root { --accent: #f5cb5c; --ethio-gold: #f5cb5c; }
-        
-        body { 
-            background-color: #050505; 
-            color: white; 
-            font-family: 'Space Grotesk', sans-serif; 
-            cursor: none; 
-            margin: 0;
-            scroll-behavior: smooth;
-        }
-
-        /* PREMIUM LOADING SCREEN */
-        #loader {
-            position: fixed; inset: 0; background: #000; z-index: 10000;
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            transition: opacity 0.8s ease, visibility 0.8s;
-        }
-        .loader-text { font-size: 10px; letter-spacing: 5px; color: var(--accent); margin-top: 20px; animation: pulse 1.5s infinite; }
-        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
-        
-        #cursor { 
-            width: 20px; height: 20px; 
-            background: var(--accent); 
-            border-radius: 50%; 
-            position: fixed; 
-            pointer-events: none; 
-            z-index: 9999; 
-            transition: transform 0.1s ease; 
-        }
-
-        .ethio-pattern-bg { 
-            position: fixed; inset: 0; 
-            background-image: url('ethio-pattern-bg.png'); 
-            background-size: cover; 
-            background-position: center; 
-            background-repeat: no-repeat;
-            opacity: 0.03; /* Lowered opacity so it doesn't interfere with video quality */
-            pointer-events: none; 
-            z-index: 1; 
+        :root { 
+            --bg: #ffffff; 
+            --text: #000000; 
+            --muted: #666666; 
+            --border: #eeeeee; 
         }
         
-        .video-container {
-            width: 100%; height: 100vh; background: #000;
-            position: relative; overflow: hidden;
-            display: flex; align-items: center; justify-content: center;
+        body, html { 
+            margin: 0; 
+            font-family: 'Inter', sans-serif; 
+            scroll-behavior: smooth; 
+            background: var(--bg);
+            color: var(--text);
+            overflow-x: hidden;
+            user-select: none;
+            -webkit-user-select: none;
         }
 
-        /* Improved Video Scaling & Quality */
-        .video-wrapper {
-            position: absolute;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
+        img {
             pointer-events: none;
-        }
-        .video-wrapper iframe {
-            width: 100vw; 
-            height: 56.25vw; /* 16:9 ratio */
-            min-height: 100vh; 
-            min-width: 177.77vh; 
-            position: absolute;
-            top: 50%; left: 50%;
-            transform: translate(-50%, -50%);
+            -webkit-user-drag: none;
         }
 
-        /* Audio Toggle Button (Bottom Left) */
-        #mute-toggle {
-            position: absolute;
-            bottom: 40px;
-            left: 40px;
-            z-index: 100;
-            width: 55px;
-            height: 55px;
+        /* Responsive Navigation */
+        nav { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center;
+            padding: 20px 60px; 
+            position: fixed; 
+            top: 0; 
+            width: 100%; 
+            box-sizing: border-box;
+            z-index: 1000; 
+            text-transform: uppercase; 
+            font-size: 11px; 
+            letter-spacing: 2px; 
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(5px);
+            border-bottom: 1px solid var(--border);
+        }
+
+        nav .logo { letter-spacing: 3px; font-weight: 600; color: var(--text); text-decoration: none; }
+        .nav-links { display: flex; }
+        nav a { text-decoration: none; color: var(--text); margin-left: 30px; font-weight: 600; transition: 0.3s; }
+        nav a:hover { opacity: 0.5; }
+
+        /* Mobile Menu Toggle */
+        .menu-toggle { display: none; cursor: pointer; font-size: 18px; font-weight: 600; }
+
+        #scrollTopBtn {
+            display: none; 
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 2000;
+            border: 1px solid var(--text);
+            background-color: white;
+            width: 45px;
+            height: 45px;
             border-radius: 50%;
-            background: rgba(255, 255, 255, 0.08);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            color: white;
-            display: flex;
+            cursor: pointer;
+            transition: 0.3s;
             align-items: center;
             justify-content: center;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            cursor: pointer;
-        }
-        #mute-toggle:hover {
-            background: var(--accent);
-            color: black;
-            transform: scale(1.15);
-            border-color: var(--accent);
         }
 
-        .scroll-hint {
-            position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%);
-            animation: bounce 2s infinite; color: var(--accent); z-index: 10;
+        /* Hero Section */
+        .parallax-hero {
+            background-image: url("./hero-main.jpg");
+            height: 100vh;
+            background-attachment: fixed;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            position: relative;
         }
 
-        @keyframes bounce {
-            0%, 20%, 50%, 80%, 100% {transform: translateY(0) translateX(-50%);}
-            40% {transform: translateY(-10px) translateX(-50%);}
-            60% {transform: translateY(-5px) translateX(-50%);}
+        .parallax-overlay { 
+            background: rgba(0,0,0,0.4); 
+            width: 100%; height: 100%; 
+            display: flex; flex-direction: column; align-items: center; justify-content: center; 
+            color: white; text-align: center; padding: 0 20px;
+            box-sizing: border-box;
+        }
+
+        .parallax-hero h1 { 
+            font-size: clamp(32px, 8vw, 56px); 
+            font-weight: 300; 
+            max-width: 800px; 
+            margin: 0; 
+            line-height: 1.1; 
+            letter-spacing: -1px; 
+        }
+
+        .parallax-hero p { 
+            font-size: 11px; 
+            text-transform: uppercase; 
+            letter-spacing: 4px; 
+            margin-top: 25px; 
+            font-weight: 300; 
+        }
+
+        /* Content Sections */
+        .container { 
+            max-width: 1400px; 
+            margin: 0 auto; 
+            padding: 80px 40px; 
+            background: white;
+            position: relative;
+            z-index: 2;
+        }
+
+        .philosophie-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            min-height: 70vh;
+        }
+
+        .philosophie-image-area {
+            background-image: url("philosophie-geometric.jpg");
+            background-attachment: fixed;
+            background-position: center;
+            background-size: cover;
+        }
+
+        .philosophie-text-area {
+            background: white;
+            padding: 80px;
+            display: flex; flex-direction: column; justify-content: center;
+        }
+
+        .philosophie-text-area h2 { font-size: 11px; text-transform: uppercase; letter-spacing: 3px; color: var(--muted); margin-bottom: 20px; }
+        .philosophie-text-area p { font-size: clamp(18px, 4vw, 24px); font-weight: 300; line-height: 1.6; margin: 0; }
+
+        /* Portfolio Grid */
+        .section-header {
+            display: flex; justify-content: space-between; align-items: baseline;
+            border-bottom: 1px solid var(--text); padding-bottom: 15px; margin-bottom: 50px;
+        }
+        .section-header h2 { font-size: 12px; text-transform: uppercase; letter-spacing: 2px; margin: 0; }
+
+        .highlight-grid { 
+            display: grid; 
+            grid-template-columns: repeat(2, 1fr); 
+            gap: 40px; 
+        }
+
+        .highlight-item { text-decoration: none; color: inherit; display: block; }
+        .highlight-item.wide { grid-column: span 2; } 
+
+        .img-container { 
+            width: 100%; 
+            overflow: hidden; 
+            border: 1px solid var(--border); 
+            margin-bottom: 15px; 
+            background: #fcfcfc;
         }
         
-        .creative-text-container { perspective: 1000px; height: 120px; display: flex; align-items: center; justify-content: center; }
+        .img-container.landscape { aspect-ratio: 16 / 9; }
+        .img-container.square { aspect-ratio: 1 / 1; }
+
+        .highlight-item img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.8s ease; }
+        .highlight-item:hover img { transform: scale(1.03); }
         
-        .dynamic-text { 
-            font-weight: 800; text-transform: uppercase; letter-spacing: -2px; display: inline-block; 
-            animation: textMaster 8s infinite ease-in-out; 
-            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
-        }
-        
-        @keyframes textMaster {
-            0%, 100% { transform: rotateX(0deg) scale(1); color: white; }
-            20% { transform: rotateY(180deg) scale(1.1); color: var(--accent); }
-            40% { transform: rotateX(90deg) scale(0.9); color: var(--ethio-gold); }
-            60% { transform: rotateZ(10deg) scale(1.3); color: #f5cb5c; }
-            80% { transform: rotateY(-180deg) scale(1); color: #0088ff; }
+        .highlight-item h3 { font-size: 16px; font-weight: 600; text-transform: uppercase; margin: 0; letter-spacing: 1px; }
+        .highlight-item p { font-size: 12px; color: var(--muted); margin-top: 5px; }
+
+        footer { 
+            margin-top: 100px; padding: 40px 0; border-top: 1px solid var(--border); 
+            display: flex; justify-content: space-between; font-size: 10px; 
+            color: var(--muted); text-transform: uppercase; letter-spacing: 1px;
         }
 
-        .glass-card { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.1); transition: 0.4s; }
-        .glass-card:hover { border-color: var(--accent); transform: translateY(-10px); background: rgba(245, 203, 92, 0.05); }
+        /* MOBILE OPTIMIZATIONS */
+        @media (max-width: 850px) {
+            nav { padding: 15px 25px; }
+            .nav-links { 
+                display: none; 
+                flex-direction: column; 
+                position: absolute; 
+                top: 50px; left: 0; width: 100%; 
+                background: white; 
+                padding: 20px 0;
+                border-bottom: 1px solid var(--border);
+                text-align: center;
+            }
+            .nav-links.active { display: flex; }
+            nav a { margin: 15px 0; }
+            .menu-toggle { display: block; }
 
-        .hero-text-section {
-            min-height: 100vh; display: flex; align-items: center; justify-content: center;
-            position: relative; z-index: 10;
-            background: linear-gradient(to bottom, #000, #050505);
-        }
+            .container { padding: 60px 20px; }
+            
+            .philosophie-section { grid-template-columns: 1fr; }
+            .philosophie-image-area { height: 300px; background-attachment: scroll; }
+            .philosophie-text-area { padding: 40px 20px; }
 
-        .vault-video {
-            width: 100%; height: 100%; object-fit: cover;
-            filter: grayscale(100%); transition: filter 0.7s ease;
+            .highlight-grid { grid-template-columns: 1fr; gap: 40px; }
+            .highlight-item.wide { grid-column: span 1; }
+
+            .parallax-hero { background-attachment: scroll; }
+            
+            footer { flex-direction: column; gap: 15px; text-align: center; }
         }
-        .group:hover .vault-video { filter: grayscale(0%); }
     </style>
 </head>
-<body class="overflow-x-hidden">
+<body oncontextmenu="return false;">
 
-    <div id="loader">
-        <div class="text-3xl font-bold tracking-tighter uppercase">BEKA<span class="text-[#f5cb5c]">CHALI</span></div>
-        <div class="loader-text">INITIALIZING CINEMATIC EXPERIENCE</div>
-    </div>
+    <button onclick="topFunction()" id="scrollTopBtn" title="Go to top">↑</button>
 
-    <div id="cursor"></div>
-    <div class="ethio-pattern-bg"></div>
-
-    <nav class="fixed w-full z-50 px-8 py-6 flex justify-between items-center mix-blend-difference">
-        <div class="text-2xl font-bold tracking-tighter uppercase">BEKA<span class="text-[#f5cb5c]">CHALI</span></div>
-        <div class="hidden md:flex gap-10 text-xs uppercase tracking-[0.2em] font-medium">
-            <a href="#work" class="hover:text-[#f5cb5c] transition">Vault</a>
-            <a href="#channels" class="hover:text-[#f5cb5c] transition">Channels</a>
-            <a href="#about" class="hover:text-[#f5cb5c] transition">About</a>
-            <a href="#contact" class="hover:text-[#f5cb5c] transition">Contact</a>
+    <nav>
+        <a href="index.html" class="logo">Beka Chali</a>
+        <div class="menu-toggle" onclick="toggleMenu()">MENU</div>
+        <div class="nav-links" id="navLinks">
+            <a href="index.html">Home</a>
+            <a href="work.html">Work</a>
+            <a href="contact.html">Contact</a>
         </div>
     </nav>
 
-    <section class="video-container">
-        <div class="video-wrapper">
-            <iframe 
-                id="hero-video"
-                src="https://www.youtube.com/embed/3r4sQ0mVeCc?enablejsapi=1&autoplay=1&mute=1&loop=1&playlist=3r4sQ0mVeCc&controls=0&modestbranding=1&rel=0&iv_load_policy=3&vq=hd1080" 
-                frameborder="0" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen>
-            </iframe>
-        </div>
+    <div class="p-wrapper">
+        <section class="parallax-hero">
+            <div class="parallax-overlay">
+                <h1>Design with the End in Mind.</h1>
+                <p>Function. Aesthetics. Buildability.</p>
+            </div>
+        </section>
 
-        <button id="mute-toggle">
-            <i id="mute-icon" class="fa-solid fa-volume-xmark text-lg"></i>
-        </button>
-        
-        <div class="scroll-hint">
-            <p class="text-[10px] tracking-[0.4em] uppercase mb-2">Scroll to explore</p>
-            <i class="fa-solid fa-chevron-down text-xl"></i>
-        </div>
-    </section>
+        <section class="philosophie-section">
+            <div class="philosophie-image-area"></div>
+            <div class="philosophie-text-area">
+                <h2>Core Philosophy</h2>
+                <p>Aesthetics without buildability and simplification results in an incomplete vision. I transform client needs into emotional experiences, bringing precise value to the expectations you dreamt of.</p>
+            </div>
+        </section>
 
-    <section class="hero-text-section px-6">
-        <div class="text-center max-w-5xl mx-auto">
-            <h1 class="text-[clamp(3.5rem,12vw,7rem)] leading-[0.85] font-bold tracking-tighter mb-6 uppercase">
-                Addis <br> <span class="text-transparent" style="-webkit-text-stroke: 1.5px white;">Storyteller</span>
-            </h1>
-            
-            <div class="creative-text-container my-8">
-                <span id="changing-text" class="dynamic-text text-[clamp(2rem,8vw,5rem)]">Cinematic Magic</span>
+        <div class="container">
+            <div class="section-header">
+                <h2>Featured Portfolio</h2>
             </div>
-            
-            <p class="text-lg md:text-2xl text-zinc-400 max-w-3xl mx-auto mb-12 leading-relaxed">
-                Lead Video Editor specializing in high-engagement movie recaps and AI-powered storytelling. Transforming raw footage into viral cinematic culture from Addis Ababa to the world.
-            </p>
-            
-            <div class="flex flex-col md:flex-row gap-8 justify-center items-center">
-                <a href="#work" class="px-12 py-5 bg-[#f5cb5c] text-black font-bold rounded-full hover:scale-110 transition uppercase tracking-widest text-sm shadow-[0_0_30px_rgba(245,203,92,0.3)]">View Vault</a>
-                <a href="#contact" class="text-sm tracking-[0.3em] border-b border-white/30 pb-1 hover:border-[#f5cb5c] transition uppercase font-medium">Contact Me</a>
-            </div>
-        </div>
-    </section>
 
-    <section id="work" class="relative py-32 px-6 max-w-7xl mx-auto z-10">
-        <h2 class="text-5xl font-bold mb-16 border-l-4 border-[#f5cb5c] pl-6 uppercase tracking-tighter">Production Vault</h2>
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <div class="glass-card rounded-2xl overflow-hidden group cursor-pointer">
-                <div class="relative aspect-video bg-zinc-900">
-                    <video class="vault-video" loop muted playsinline><source src="vault_1.mp4" type="video/mp4"></video>
-                    <div class="absolute inset-0 bg-black/40 opacity-40 group-hover:opacity-0 transition pointer-events-none"></div>
-                </div>
-                <div class="p-6">
-                    <span class="text-[10px] text-[#f5cb5c] tracking-widest uppercase">Event Advertisement</span>
-                    <h3 class="text-xl font-bold mt-2 uppercase">Animation and Motion Graphics</h3>
-                </div>
-            </div>
-            <div class="glass-card rounded-2xl overflow-hidden group cursor-pointer">
-                <div class="relative aspect-video bg-zinc-900">
-                    <video class="vault-video" loop muted playsinline><source src="vault_2.mp4" type="video/mp4"></video>
-                </div>
-                <div class="p-6">
-                    <span class="text-[10px] text-[#f5cb5c] tracking-widest uppercase">Company Ad</span>
-                    <h3 class="text-xl font-bold mt-2 uppercase">Google Ads Campaign</h3>
-                </div>
-            </div>
-            <div class="glass-card rounded-2xl overflow-hidden group cursor-pointer">
-                <div class="relative aspect-video bg-zinc-900">
-                    <video class="vault-video" loop muted playsinline><source src="vault_3.mp4" type="video/mp4"></video>
-                </div>
-                <div class="p-6"><span class="text-[10px] text-[#f5cb5c] tracking-widest uppercase">Daily Stories</span><h3 class="text-xl font-bold mt-2 uppercase">Viral Retention Expert</h3></div>
-            </div>
-            <div class="glass-card rounded-2xl overflow-hidden group cursor-pointer">
-                <div class="relative aspect-video bg-zinc-900">
-                    <video class="vault-video" loop muted playsinline><source src="vault_4.mp4" type="video/mp4"></video>
-                </div>
-                <div class="p-6"><span class="text-[10px] text-[#f5cb5c] tracking-widest uppercase">Logo Animation</span><h3 class="text-xl font-bold mt-2 uppercase">Company Social Media</h3></div>
-            </div>
-            <div class="glass-card rounded-2xl overflow-hidden group cursor-pointer">
-                <div class="relative aspect-video bg-zinc-900">
-                    <video class="vault-video" loop muted playsinline><source src="vault_5.mp4" type="video/mp4"></video>
-                </div>
-                <div class="p-6"><span class="text-[10px] text-[#f5cb5c] tracking-widest uppercase">Motion Graphics</span><h3 class="text-xl font-bold mt-2 uppercase">Mobile App Ads</h3></div>
-            </div>
-            <div class="glass-card rounded-2xl overflow-hidden group cursor-pointer">
-                <div class="relative aspect-video bg-zinc-900">
-                    <video class="vault-video" loop muted playsinline><source src="vault_6.mp4" type="video/mp4"></video>
-                </div>
-                <div class="p-6"><span class="text-[10px] text-[#f5cb5c] tracking-widest uppercase">Company Services</span><h3 class="text-xl font-bold mt-2 uppercase">Explainer Videos</h3></div>
-            </div>
-        </div>
-    </section>
+            <div class="highlight-grid">
+                <a href="work.html" class="highlight-item wide">
+                    <div class="img-container landscape"><img src="h1.jpg" alt="Work"></div>
+                    <h3>Medical Library</h3>
+                    <p>Institutional Design • Salale University, Ethiopia</p>
+                </a>
 
-    <section id="channels" class="py-20 bg-zinc-900/30 px-6">
-        <div class="max-w-7xl mx-auto">
-            <h2 class="text-3xl font-bold mb-12 uppercase tracking-widest text-center">YouTube Channels</h2>
-            <div class="grid grid-cols-2 md:grid-cols-5 gap-6">
-                <a href="https://youtu.be/3r4sQ0mVeCc" target="_blank" class="group relative aspect-square rounded-full overflow-hidden border border-white/10 hover:border-[#f5cb5c] transition duration-500">
-                    <div class="w-full h-full bg-zinc-800 flex items-center justify-center">
-                        <img src="yt_1.jpg" class="absolute inset-0 w-full h-full object-cover opacity-40 group-hover:opacity-100 transition duration-500" onerror="this.style.display='none'">
-                        <i class="fa-brands fa-youtube text-3xl opacity-50 group-hover:opacity-100 group-hover:text-red-600 transition"></i>
-                    </div>
+                <a href="work.html" class="highlight-item">
+                    <div class="img-container square"><img src="h2.jpg" alt="Work"></div>
+                    <h3>Bamboo House</h3>
+                    <p>IBCC Honorary Mention • China</p>
                 </a>
-                <a href="https://www.youtube.com/@MysteryoftheGospel-v4b" target="_blank" class="group relative aspect-square rounded-full overflow-hidden border border-white/10 hover:border-[#f5cb5c] transition duration-500">
-                    <div class="w-full h-full bg-zinc-800 flex items-center justify-center">
-                        <img src="yt_2.jpg" class="absolute inset-0 w-full h-full object-cover opacity-40 group-hover:opacity-100 transition duration-500" onerror="this.style.display='none'">
-                        <i class="fa-brands fa-youtube text-3xl opacity-50 group-hover:opacity-100 group-hover:text-red-600 transition"></i>
-                    </div>
-                </a>
-                <a href="https://youtu.be/k8tyNyypA8s" target="_blank" class="group relative aspect-square rounded-full overflow-hidden border border-white/10 hover:border-[#f5cb5c] transition duration-500">
-                    <div class="w-full h-full bg-zinc-800 flex items-center justify-center">
-                        <img src="yt_3.jpg" class="absolute inset-0 w-full h-full object-cover opacity-40 group-hover:opacity-100 transition duration-500" onerror="this.style.display='none'">
-                        <i class="fa-brands fa-youtube text-3xl opacity-50 group-hover:opacity-100 group-hover:text-red-600 transition"></i>
-                    </div>
-                </a>
-                <a href="https://youtu.be/MeARAi1CwLk" target="_blank" class="group relative aspect-square rounded-full overflow-hidden border border-white/10 hover:border-[#f5cb5c] transition duration-500">
-                    <div class="w-full h-full bg-zinc-800 flex items-center justify-center">
-                        <img src="yt_4.jpg" class="absolute inset-0 w-full h-full object-cover opacity-40 group-hover:opacity-100 transition duration-500" onerror="this.style.display='none'">
-                        <i class="fa-brands fa-youtube text-3xl opacity-50 group-hover:opacity-100 group-hover:text-red-600 transition"></i>
-                    </div>
-                </a>
-                <a href="https://youtu.be/BTyv69FRx_w" target="_blank" class="group relative aspect-square rounded-full overflow-hidden border border-white/10 hover:border-[#f5cb5c] transition duration-500">
-                    <div class="w-full h-full bg-zinc-800 flex items-center justify-center">
-                        <img src="yt_5.jpg" class="absolute inset-0 w-full h-full object-cover opacity-40 group-hover:opacity-100 transition duration-500" onerror="this.style.display='none'">
-                        <i class="fa-brands fa-youtube text-3xl opacity-50 group-hover:opacity-100 group-hover:text-red-600 transition"></i>
-                    </div>
-                </a>
-            </div>
-        </div>
-    </section>
 
-    <section id="about" class="py-32 px-6 max-w-7xl mx-auto grid md:grid-cols-2 gap-20 items-center">
-        <div>
-            <h2 class="text-5xl font-bold mb-8 uppercase tracking-tighter">Beka Debela Chali</h2>
-            <p class="text-zinc-400 text-lg leading-relaxed mb-6">Creative mind with a knack for detail and resilience in solving complex editing challenges. Experienced Lead Video Editor focused on branding and production standards.</p>
-            <div class="flex gap-4">
-                <span class="px-4 py-2 bg-white/5 rounded-full text-[10px] uppercase font-bold text-[#f5cb5c]">Adobe Premiere</span>
-                <span class="px-4 py-2 bg-white/5 rounded-full text-[10px] uppercase font-bold text-[#f5cb5c]">Digital Literacy</span>
-            </div>
-        </div>
-        <div class="flex items-center justify-center">
-            <div class="relative w-64 h-64 md:w-80 md:h-80 flex items-center justify-center">
-                <div class="absolute inset-0 border border-white/10 rounded-full animate-[spin_20s_linear_infinite]"><div class="absolute -top-1.5 left-1/2 -translate-x-1/2 w-3 h-3 bg-[#f5cb5c] rounded-full shadow-[0_0_15px_#f5cb5c]"></div></div>
-                <div class="w-4/5 h-4/5 rounded-full overflow-hidden border border-white/5 flex items-center justify-center"><img src="ethio-pattern-bg.png" class="w-full h-full object-cover opacity-30 filter invert grayscale"></div>
-            </div>
-        </div>
-    </section>
+                <a href="work.html" class="highlight-item">
+                    <div class="img-container square"><img src="h3.jpg" alt="Work"></div>
+                    <h3>Hotel Competition</h3>
+                    <p>Conceptual Form • Addis Ababa</p>
+                </a>
 
-    <section id="contact" class="py-32 px-6 max-w-4xl mx-auto">
-        <div class="glass-card p-12 rounded-[3rem] text-center">
-            <h2 class="text-5xl font-bold mb-6 uppercase tracking-tighter">Let's Create a Stunning Video</h2>
-            <p class="text-zinc-400 mb-12 text-lg">Ready to grow your YouTube channel or create high-impact AI ads? Reach out to me directly.</p>
-            <div class="flex flex-col gap-8 items-center justify-center">
-                <a href="tel:+251934497929" class="group flex items-center gap-4 text-2xl font-bold hover:text-[#f5cb5c] transition duration-300">
-                    <div class="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-[#f5cb5c]/20"><i class="fa-solid fa-phone text-sm"></i></div>
-                    +251 929 10 43 03
+                <a href="work.html" class="highlight-item wide">
+                    <div class="img-container landscape"><img src="h4.jpg" alt="Work"></div>
+                    <h3>3D Floor Plans</h3>
+                    <p>Residential Concept & Interior Visualization</p>
                 </a>
-                <a href="mailto:bekachali527@gmail.com" class="group flex items-center gap-4 text-2xl font-bold hover:text-[#f5cb5c] transition duration-300">
-                    <div class="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-[#f5cb5c]/20"><i class="fa-solid fa-envelope text-sm"></i></div>
-                    Email Me Directly
+
+                <a href="work.html" class="highlight-item">
+                    <div class="img-container square"><img src="h5.jpg" alt="Work"></div>
+                    <h3>Office Interior</h3>
+                    <p>Functional Workspace • Addis Ababa</p>
                 </a>
-                <a href="https://www.linkedin.com/in/bekachali" target="_blank" class="px-10 py-4 bg-white text-black font-bold rounded-full hover:bg-[#f5cb5c] transition duration-500 uppercase tracking-widest flex items-center gap-3">
-                    <i class="fa-brands fa-linkedin text-xl"></i> LinkedIn Profile
+
+                <a href="work.html" class="highlight-item">
+                    <div class="img-container square"><img src="h6.jpg" alt="Work"></div>
+                    <h3>Coffee Shop</h3>
+                    <p>Mood Board to Construction Delivery</p>
+                </a>
+
+                <a href="work.html" class="highlight-item">
+                    <div class="img-container square"><img src="h7.jpg" alt="Work"></div>
+                    <h3>Minimalist Suite</h3>
+                    <p>Interior Visualization & Aesthetic Refinement</p>
+                </a>
+
+                <a href="work.html" class="highlight-item">
+                    <div class="img-container square"><img src="h8.jpg" alt="Work"></div>
+                    <h3>Luxury Bathroom</h3>
+                    <p>Corona Rendering • High-End Finish Detail</p>
                 </a>
             </div>
-        </div>
-    </section>
 
-    <footer class="py-20 text-center border-t border-white/5 uppercase text-[10px] tracking-[0.2em]"><p class="text-zinc-600">© 2026 BEKA CHALI | ADDIS ABABA STORYTELLER.</p></footer>
+            <footer>
+                <div>&copy; 2026 Beka Chali</div>
+                <div>Addis Ababa, Ethiopia</div>
+            </footer>
+        </div>
+    </div>
 
     <script>
-        // YouTube API Mute/Unmute Logic
-        var player;
-        function onYouTubeIframeAPIReady() {
-            player = new YT.Player('hero-video', {
-                events: {
-                    'onReady': onPlayerReady
-                }
-            });
+        function toggleMenu() {
+            document.getElementById("navLinks").classList.toggle("active");
         }
 
-        function onPlayerReady(event) {
-            const muteBtn = document.getElementById('mute-toggle');
-            const muteIcon = document.getElementById('mute-icon');
-            
-            muteBtn.addEventListener('click', () => {
-                if (player.isMuted()) {
-                    player.unMute();
-                    muteIcon.classList.replace('fa-volume-xmark', 'fa-volume-high');
-                } else {
-                    player.mute();
-                    muteIcon.classList.replace('fa-volume-high', 'fa-volume-xmark');
-                }
-            });
-        }
-
-        // Load YouTube API
-        var tag = document.createElement('script');
-        tag.src = "https://www.youtube.com/iframe_api";
-        var firstScriptTag = document.getElementsByTagName('script')[0];
-        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-
-        // Remove Loader
-        window.addEventListener('load', () => {
-            const loader = document.getElementById('loader');
-            setTimeout(() => {
-                loader.style.opacity = '0';
-                setTimeout(() => { loader.style.visibility = 'hidden'; }, 800);
-            }, 1000);
-        });
-
-        // Custom Cursor Movement
-        const cursor = document.getElementById('cursor');
-        document.addEventListener('mousemove', e => { 
-            cursor.style.left = e.clientX + 'px'; 
-            cursor.style.top = e.clientY + 'px'; 
-        });
-
-        // Dynamic Text Cycler
-        const phrases = ["Premiere Pro Expert", "YouTube Storyteller", "AI Video Master", "Cinematic Motion"];
-        let count = 0; 
-        const textElement = document.getElementById('changing-text');
+        let mybutton = document.getElementById("scrollTopBtn");
+        window.onscroll = function() {
+            if (document.body.scrollTop > 500 || document.documentElement.scrollTop > 500) {
+                mybutton.style.display = "flex";
+            } else {
+                mybutton.style.display = "none";
+            }
+        };
         
-        setInterval(() => { 
-            textElement.style.opacity = 0; 
-            setTimeout(() => { 
-                count = (count + 1) % phrases.length; 
-                textElement.innerText = phrases[count]; 
-                textElement.style.opacity = 1; 
-            }, 500); 
-        }, 3000);
+        function topFunction() {
+            window.scrollTo({top: 0, behavior: 'smooth'});
+        }
 
-        // Cursor Scaling on Interactables
-        document.querySelectorAll('a, button, .glass-card').forEach(link => { 
-            link.addEventListener('mouseenter', () => { 
-                cursor.style.transform = 'scale(4)'; 
-                cursor.style.mixBlendMode = 'difference'; 
-            }); 
-            link.addEventListener('mouseleave', () => { 
-                cursor.style.transform = 'scale(1)'; 
-                cursor.style.mixBlendMode = 'normal'; 
-            }); 
-        });
-
-        // Smooth Scroll
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => { 
-            anchor.addEventListener('click', function (e) { 
-                e.preventDefault(); 
-                document.querySelector(this.getAttribute('href')).scrollIntoView({ behavior: 'smooth' }); 
-            }); 
-        });
-
-        // Production Vault Video Hover Play
-        document.querySelectorAll('.group').forEach(group => {
-            const video = group.querySelector('.vault-video');
-            if (video) {
-                group.addEventListener('mouseenter', () => {
-                    const playPromise = video.play();
-                    if (playPromise !== undefined) { playPromise.catch(() => {}); }
-                });
-                group.addEventListener('mouseleave', () => { video.pause(); video.currentTime = 0; });
+        document.addEventListener('keydown', function(e) {
+            if (e.ctrlKey && (e.key === 's' || e.key === 'u' || e.key === 'i')) {
+                e.preventDefault();
             }
         });
     </script>
