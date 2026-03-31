@@ -19,18 +19,15 @@
             color: var(--text); 
             font-family: 'Inter', sans-serif;
             overflow-x: hidden;
-            /* Security: Disables selection */
             user-select: none;
             -webkit-user-select: none;
         }
 
-        /* Image Security: Prevents dragging */
         img {
             pointer-events: none;
             -webkit-user-drag: none;
         }
         
-        /* Responsive Nav */
         nav { 
             display: flex; 
             justify-content: space-between; 
@@ -73,17 +70,19 @@
         
         .contact-content p { color: var(--muted); font-size: 15px; margin-bottom: 50px; line-height: 1.6; }
 
-        .links-area { margin-bottom: 60px; }
-        .contact-link { 
-            display: block; 
-            font-size: 18px; 
-            color: #000; 
-            text-decoration: none; 
-            margin-bottom: 15px; 
-            font-weight: 400;
-            transition: 0.3s;
+        .upwork-notice { 
+            margin-bottom: 60px; 
+            padding: 30px;
+            border: 1px solid #000;
+            display: inline-block;
         }
-        .contact-link:hover { opacity: 0.6; }
+
+        .upwork-notice h2 {
+            font-size: 18px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+        }
 
         .profile-photo-container {
             width: 100%;
@@ -97,7 +96,6 @@
 
         footer { margin-top: 80px; font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 2px; }
 
-        /* MOBILE FIXES */
         @media (max-width: 850px) {
             nav { padding: 15px 25px; }
             .menu-toggle { display: block; }
@@ -113,9 +111,7 @@
             }
             .nav-links.active { display: flex; }
             nav a { margin: 15px 0; }
-            
             .container { padding: 120px 25px 60px; }
-            .contact-content h1 { margin-bottom: 30px; }
         }
     </style>
 </head>
@@ -133,12 +129,12 @@
 
     <div class="container">
         <div class="contact-content">
-            <h1>If you’d like to discuss your ideas or explore working together, I’d be happy to connect.</h1>
-            <p>Based in Addis Ababa, Ethiopia. Specializing in Revit, Sketchup, and high-fidelity 3D visualization.</p>
+            <h1>Let’s build your vision together.</h1>
+            <p>Specializing in architectural visualization, Revit modeling, and cinematic motion graphics.</p>
             
-            <div class="links-area">
-                <a href="mailto:bekachali527@gmail.com" class="contact-link">bekachali527@gmail.com</a>
-                <a href="https://linkedin.com/in/beka11" target="_blank" class="contact-link">LinkedIn Profile &rarr;</a>
+            <div class="upwork-notice">
+                <h2>Project Inquiries</h2>
+                <p>To comply with platform policies, please send all project inquiries and messages via **Upwork**.</p>
             </div>
 
             <div class="profile-photo-container">
@@ -156,7 +152,6 @@
             document.getElementById("navLinks").classList.toggle("active");
         }
 
-        // Security: Block keyboard shortcuts
         document.addEventListener('keydown', function(e) {
             if (e.ctrlKey && (e.key === 's' || e.key === 'u' || e.key === 'i')) {
                 e.preventDefault();
